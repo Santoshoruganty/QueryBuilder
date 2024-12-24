@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TRUEPRICE Query Builder</title>
+  <style>
+    /* General body styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000; /* Set background to black */
+      color: #fff; /* Set text to white */
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Logo and Header Styling */
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: #121212; /* Darker black for header */
+      border-bottom: 1px solid #333;
+    }
+
+    .header img {
+      width: 50px; /* Adjust logo size */
+      height: auto;
+      margin-right: 15px;
+    }
+
+    .header h1 {
+      text-align: center;
+      flex: 1; /* Center align the title */
+      margin: 0;
+    }
+
+    /* Center title and lower it */
+    .title {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Form styling */
+    form {
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      max-width: 600px;
+      background-color: #222; /* Dark gray background for form */
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      color: #ddd; /* Lighter text for labels */
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin-top: 5px;
+      width: 100%;
+      max-width: 400px;
+      font-size: 14px;
+      color: #000;
+    }
+
+    button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      height: 100px;
+      margin-top: 20px;
+      font-size: 14px;
+      padding: 10px;
+      color: #000;
+    }
+
+    /* Output section */
+    .output {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px dashed #888;
+      background-color: #333; /* Darker gray for output */
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <div class="header">
+    <img src="logo.png" alt="Logo">
+    <h1>Query Builder</h1>
+  </div>
+
+  <!-- Title Section -->
+  <div class="title">
+    <p>Use this tool to generate the <code>get_data</code> function call script dynamically based on your inputs.</p>
+  </div>
+
+  <!-- Form Section -->
+  <form id="query-form">
+    <h3>Input Parameters</h3>
+
+    <label for="access-token">Access Token</label>
+    <input type="text" id="access-token" placeholder="Enter Access Token" required />
+
+    <label for="start-date">Start Date</label>
+    <input type="date" id="start-date" required />
+
+    <label for="end-date">End Date</label>
+    <input type="date" id="end-date" required />
+
+    <label for="curve">Curve Type</label>
+    <select id="curve">
+      <option value="energy">Energy</option>
+      <option value="non-energy">Non-Energy</option>
+      <option value="ptc">PTC</option>
+      <option value="matrix">Matrix</option>
+      <option value="rec">REC</option>
+    </select>
+
+    <label for="iso">ISO</label>
+    <select id="iso">
+      <option value="ercot">ERCOT</option>
+      <option value="nyiso">NYISO</option>
+      <option value="miso">MISO</option>
+      <option value="pjm">PJM</option>
+      <option value="isone">ISO-NE</option>
+    </select>
+
+    <label for="strip">Strip</label>
+    <select id="strip">
+      <option value="standardized">Standardized</option>
+      <option value="unstandardized">Unstandardized</option>
+    </select>
+
+    <label for="idcob">IDCOB</label>
+    <select id="idcob">
+      <option value="latestall">Latest All</option>
+      <option value="intradayonly">Intraday Only</option>
+    </select>
+
+    <label for="file-type">File Type</label>
+    <select id="file-type">
+      <option value="csv">CSV</option>
+      <option value="xlsx">XLSX</option>
+      <option value="json">JSON</option>
+    </select>
+
+    <label for="operating-day">Operating Day (Optional)</label>
+    <input type="date" id="operating-day" />
+
+    <label for="operating-day-end">Operating Day End (Optional)</label>
+    <input type="date" id="operating-day-end" />
+
+    <button type="button" onclick="generateFunctionCall()">Generate Function Call</button>
+  </form>
+
+  <!-- Output Section -->
+  <div class="output">
+    <h3>Generated Function Call</h3>
+    <textarea id="function-call" readonly></textarea>
+  </div>
+
+  <script>
+    function generateFunctionCall() {
+      // Collect input values
+      const accessToken = document.getElementById("access-token").value;
+      const startDate = document.getElementById("start-date").value;
+      const endDate = document.getElementById("end-date").value;
+      const curve = document.getElementById("curve").value;
+      const iso = document.getElementById("iso").value;
+      const strip = document.getElementById("strip").value;
+      const idcob = document.getElementById("idcob").value;
+      const fileType = document.getElementById("file-type").value;
+      const operatingDay = document.getElementById("operating-day").value || "";
+      const operatingDayEnd = document.getElementById("operating-day-end").value || "";
+
+      // Generate the function call string
+      const functionCall = `get_data("${accessToken}", "${startDate}", "${endDate}", "${operatingDay}", "${operatingDayEnd}", "${curve}", "${iso}", "${strip}", "${idcob}", "${fileType}")`;
+
+      // Display the generated function call
+      document.getElementById("function-call").value = functionCall;
+    }
+  </script>
+</body>
+</html>
